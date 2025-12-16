@@ -10,13 +10,14 @@ import Link from 'next/link';
 import { otpFormSchema, VerifyOtpType } from '@/lib/schemes/auth.schema';
 import { handleVerifyOtp } from './_actions/verify-otp';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
-import { useRouter} from 'next/navigation';
+import { useRouter, useSearchParams} from 'next/navigation';
 import { handleForgetPassword } from '../forget-password/_actions/forget-password';
 import { MoveLeft } from 'lucide-react';
 
 
-export default function VerifyOtpPage({ params }: { params: {email: string }}) {
-
+export default function VerifyOtpPage() {
+     const searchParams = useSearchParams();
+     const queryEmail = searchParams.get('email');
      const [verifyCodeError, setVerifyCodeError] = useState<string | null>(null);
      const router = useRouter();
      const [timer, setTimer] = useState<number>(() => {
@@ -36,12 +37,11 @@ export default function VerifyOtpPage({ params }: { params: {email: string }}) {
   
    
 useEffect(() => {
-    const queryEmail = email
-    if (!queryEmail) {
-      router.push('/forget-password');
-    } else {
-      setEmail(queryEmail);
-    }
+  if (!queryEmail) {
+    router.push('/forget-password');
+  } else {
+    setEmail(queryEmail);
+  }
     const savedEndTime = localStorage.getItem("otpEndTime");
 
     if (savedEndTime) {
@@ -53,7 +53,7 @@ useEffect(() => {
       localStorage.setItem("otpEndTime", JSON.stringify(initialEndTime));
       setTimer(60);
     }
-  }, [email, router]);
+  }, [queryEmail, router]);
  
   useEffect(() => {
     if (timer <= 0) return;
