@@ -34,7 +34,7 @@ export default function VerifyOtpPage() {
    
  
 
-  if (!email) return;  
+  
    
 useEffect(() => {
     const queryEmail = searchParams.get('email');
