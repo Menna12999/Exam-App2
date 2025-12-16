@@ -44,7 +44,7 @@ const [forgetPasswordError, setForgetPasswordError] = useState<string | null>(nu
       if(response.message == 'success'){
         toast.success('OTP sent to your email')
         setForgetPasswordError(null)
-        router.push(`/verify-otp`);
+        router.push(`/verify-otp?email=${values.email}`);
       }
     }
     catch(err){
