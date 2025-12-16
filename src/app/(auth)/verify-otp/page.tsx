@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { otpFormSchema, VerifyOtpType } from '@/lib/schemes/auth.schema';
 import { handleVerifyOtp } from './_actions/verify-otp';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
-import { useRouter} from 'next/navigation';
+import { useRouter, useSearchParams} from 'next/navigation';
 import { handleForgetPassword } from '../forget-password/_actions/forget-password';
 import { MoveLeft } from 'lucide-react';
 import { useSession } from 'next-auth/react';
@@ -20,6 +20,7 @@ export default function VerifyOtpPage() {
 
      const [verifyCodeError, setVerifyCodeError] = useState<string | null>(null);
       const { data: session } = useSession()
+      const searchParams = useSearchParams();
      console.log(session);
      const router = useRouter();
      const [timer, setTimer] = useState<number>(() => {
@@ -31,7 +32,7 @@ export default function VerifyOtpPage() {
 });
    
      const [isResendDisabled, setIsResendDisabled] = useState(false);
-     const email = session?.user?.email;
+     const email = searchParams.get("email")
    
    
    
