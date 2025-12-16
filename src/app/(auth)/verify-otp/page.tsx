@@ -10,15 +10,14 @@ import Link from 'next/link';
 import { otpFormSchema, VerifyOtpType } from '@/lib/schemes/auth.schema';
 import { handleVerifyOtp } from './_actions/verify-otp';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
-import { useRouter, useSearchParams} from 'next/navigation';
+import { useRouter} from 'next/navigation';
 import { handleForgetPassword } from '../forget-password/_actions/forget-password';
 import { MoveLeft } from 'lucide-react';
 
 
-export default function VerifyOtpPage() {
+export default function VerifyOtpPage({ params }: { params: {email: string }}) {
 
      const [verifyCodeError, setVerifyCodeError] = useState<string | null>(null);
-      const searchParams = useSearchParams();
      const router = useRouter();
      const [timer, setTimer] = useState<number>(() => {
   if (typeof window !== "undefined") {
@@ -37,7 +36,7 @@ export default function VerifyOtpPage() {
   
    
 useEffect(() => {
-    const queryEmail = searchParams.get('email');
+    const queryEmail = email
     if (!queryEmail) {
       router.push('/forget-password');
     } else {
