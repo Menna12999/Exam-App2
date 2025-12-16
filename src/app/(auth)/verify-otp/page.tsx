@@ -32,18 +32,17 @@ export default function VerifyOtpPage() {
        const [email, setEmail] = useState<string | null>(null);
 
    
- useEffect(() => {
+ 
+
+  if (!email) return;  
+   
+useEffect(() => {
     const queryEmail = searchParams.get('email');
     if (!queryEmail) {
       router.push('/forget-password');
     } else {
       setEmail(queryEmail);
     }
-  }, [searchParams, router]);
-
-  if (!email) return null;  
-   
-useEffect(() => {
     const savedEndTime = localStorage.getItem("otpEndTime");
 
     if (savedEndTime) {
