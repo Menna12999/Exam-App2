@@ -36,8 +36,8 @@ const [forgetPasswordError, setForgetPasswordError] = useState<string | null>(nu
       const diff = Math.floor((Number(savedEndTime) - Date.now()) / 1000);
       if (diff > 0) {
         toast.error(`Please wait ${diff}s before requesting a new code.`);
-        router.push(`/verify-otp/${values.email}`);
-        return;
+        router.push(`/verify-otp?email=${values.email}`);        
+           return;
       }
     }
       const response = await handleForgetPassword(values);
