@@ -13,15 +13,12 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp
 import { useRouter, useSearchParams} from 'next/navigation';
 import { handleForgetPassword } from '../forget-password/_actions/forget-password';
 import { MoveLeft } from 'lucide-react';
-import { useSession } from 'next-auth/react';
 
 
 export default function VerifyOtpPage() {
 
      const [verifyCodeError, setVerifyCodeError] = useState<string | null>(null);
-      const { data: session } = useSession()
       const searchParams = useSearchParams();
-     console.log(session);
      const router = useRouter();
      const [timer, setTimer] = useState<number>(() => {
   if (typeof window !== "undefined") {
@@ -32,15 +29,21 @@ export default function VerifyOtpPage() {
 });
    
      const [isResendDisabled, setIsResendDisabled] = useState(false);
-     const email = searchParams.get("email")
+       const [email, setEmail] = useState<string | null>(null);
+
    
-   
+ useEffect(() => {
+    const queryEmail = searchParams.get('email');
+    if (!queryEmail) {
+      router.push('/forget-password');
+    } else {
+      setEmail(queryEmail);
+    }
+  }, [searchParams, router]);
+
+  if (!email) return null;  
    
 useEffect(() => {
-    if (!email) {
-    router.push("/forget-password");
-    return;
-    }
     const savedEndTime = localStorage.getItem("otpEndTime");
 
     if (savedEndTime) {
